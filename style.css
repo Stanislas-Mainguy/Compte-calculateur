@@ -37,7 +37,8 @@ thead {
   background: #020617;
 }
 
-th, td {
+th,
+td {
   padding: 0.35rem 0.5rem;
   border-bottom: 1px solid #1e293b;
   text-align: right;
@@ -66,6 +67,7 @@ tr:nth-child(odd) td {
   font-variant-numeric: tabular-nums;
 }
 
+/* Input montant */
 input[type="number"] {
   width: 80px;
   padding: 0.15rem 0.35rem;
@@ -78,11 +80,25 @@ input[type="number"] {
   outline: none;
 }
 
+/* Focus input */
 input[type="number"]:focus {
   border-color: #f97316;
   box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.4);
 }
 
+/* Supprimer les flèches des inputs number (Chrome, Edge, etc.) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Supprimer les flèches des inputs number (Firefox) */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Boutons génériques */
 .btn {
   padding: 0.2rem 0.5rem;
   border-radius: 999px;
@@ -115,6 +131,7 @@ input[type="number"]:focus {
   opacity: 0.9;
 }
 
+/* Zone des totaux */
 .totals {
   display: flex;
   justify-content: space-between;
@@ -159,53 +176,22 @@ input[type="number"]:focus {
   color: #f97373;
 }
 
-footer {
-  margin-top: 1.5rem;
-  text-align: center;
-  font-size: 0.75rem;
-  color: #6b7280;
-}
-
-/* Retirer les petites flèches des inputs number (Chrome, Edge, etc.) */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Retirer les flèches sur Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
-input[type="number"] {
-  width: 80px;
-  padding: 0.15rem 0.35rem;
-  border-radius: 8px;
-  border: 1px solid #1f2937;
-  background: #020617;
-  color: #e5e7eb;
-  font-size: 0.85rem;
-  text-align: right;
-  outline: none;
-}
-
-v.actions-bar {
+/* Barre d’actions (bouton reset) */
+.actions-bar {
   margin-top: 1rem;
   display: flex;
   justify-content: flex-end;
 }
 
 .btn-reset {
-  background: #4b5563; /* gris neutre */
+  background: #4b5563;
   color: #e5e7eb;
 }
 
-.btn-reset:hover {
-  opacity: 0.95;
+/* Footer */
+footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #6b7280;
 }
-
-.btn-reset:active {
-  opacity: 0.9;
-}
-
