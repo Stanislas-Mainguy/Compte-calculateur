@@ -8,24 +8,64 @@ const categories = [
   "SNCF",
   "Frais bancaires",
   "Virement compte perso",
-  "Virement sortant",
+  "Virement maman",
   "Voiture",
   "Formations",
   "Santé",
   "Autres",
 ];
 
-// Chaque catégorie garde ses totaux en mémoire (dans le JS)
-const state = categories.map(cat => ({
-  categorie: cat,
-  sorties: 0,
-  entrees: 0,
-}));
+const STORAGE_KEY = "budgetCalcStateV1";
+
+// state sera rempli soit à partir du localStorage, soit vide
+let state = [];
 
 let tbody;
 let totalSortiesEl;
 let totalEntreesEl;
 let totalFinalEl;
+
+function createEmptyState() {
+  return categories.map(cat => ({
+    categorie: cat,
+    sorties: 0,
+    entrees: 0,
+  }));
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      state = createEmptyState();
+      return;
+    }
+
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed) || parsed.length !== categories.length) {
+      state = createEmptyState();
+      return;
+    }
+
+    // On recale bien les catégories au cas où
+    state = parsed.map((row, index) => ({
+      categorie: categories[index],
+      sorties: Number(row.sorties) || 0,
+      entrees: Number(row.entrees) || 0,
+    }));
+  } catch (e) {
+    console.error("Erreur chargement state, réinit.", e);
+    state = createEmptyState();
+  }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {
+    console.error("Erreur sauvegarde state", e);
+  }
+}
 
 function formatEuros(value) {
   return value.toFixed(2).replace(".", ",") + " €";
@@ -67,6 +107,7 @@ function applyAmount(index, type) {
   }
 
   input.value = "";
+  saveState();
   renderTotals();
 }
 
@@ -131,12 +172,31 @@ function renderTable() {
   renderTotals();
 }
 
-// On attend que le DOM soit prêt
-document.addEventListener("DOMContentLoaded", () => {
+function resetAll() {
+  const confirmReset = confirm(
+    "Tu vas effacer toutes les données mémorisées sur ce navigateur pour ce calculateur. Continuer ?"
+  );
+  if (!confirmReset) return;
+
+  state = createEmptyState();
+  saveState();
+  renderTable();
+}
+
+function init() {
   tbody = document.getElementById("categories-body");
   totalSortiesEl = document.getElementById("total-sorties");
   totalEntreesEl = document.getElementById("total-entrees");
   totalFinalEl = document.getElementById("total-final");
 
+  const resetBtn = document.getElementById("reset-btn");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", resetAll);
+  }
+
+  loadState();
   renderTable();
-});
+}
+
+// Grâce à `defer`, le DOM est prêt ici
+init();
