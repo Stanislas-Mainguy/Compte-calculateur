@@ -17,7 +17,7 @@ const categories = [
 
 const STORAGE_KEY = "budgetCalcStateV1";
 
-// state sera rempli soit à partir du localStorage, soit vide
+// state sera rempli soit à partir du localStorage, soit créé vide
 let state = [];
 
 let tbody;
@@ -47,7 +47,6 @@ function loadState() {
       return;
     }
 
-    // On recale bien les catégories au cas où
     state = parsed.map((row, index) => ({
       categorie: categories[index],
       sorties: Number(row.sorties) || 0,
@@ -198,5 +197,5 @@ function init() {
   renderTable();
 }
 
-// Grâce à `defer`, le DOM est prêt ici
+// Grâce à defer dans le <head>, le DOM est prêt ici
 init();
