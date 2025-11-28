@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Calculateur de comptes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="app">
+    <h1>Calculateur de comptes par catégorie</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Catégorie</th>
+          <th>Sorties (€)</th>
+          <th>Entrées (€)</th>
+          <th>Montant</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="categories-body">
+        <!-- lignes générées en JS -->
+      </tbody>
+    </table>
+
+    <div class="totals">
+      <div class="total-card">
+        <h2>Total sorties</h2>
+        <div class="total-value total-sorties" id="total-sorties">0.00 €</div>
+      </div>
+
+      <div class="total-card">
+        <h2>Total entrées</h2>
+        <div class="total-value total-entrees" id="total-entrees">0.00 €</div>
+      </div>
+
+      <div class="total-card">
+        <h2>Solde final</h2>
+        <div class="total-value total-final" id="total-final">0.00 €</div>
+      </div>
+    </div>
+
+    <footer>
+      Tout est calculé dans ton navigateur. Rafraîchir la page réinitialise les valeurs.
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
