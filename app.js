@@ -8,7 +8,7 @@ const categories = [
   "SNCF",
   "Frais bancaires",
   "Virement compte perso",
-  "Virement maman",
+  "Virement sortant",
   "Voiture",
   "Formations",
   "Santé",
