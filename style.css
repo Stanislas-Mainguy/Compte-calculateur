@@ -165,3 +165,16 @@ footer {
   font-size: 0.75rem;
   color: #6b7280;
 }
+
+/* Retirer les petites flèches des inputs number (Chrome, Edge, etc.) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Retirer les flèches sur Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
