@@ -190,3 +190,22 @@ input[type="number"] {
   outline: none;
 }
 
+v.actions-bar {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-reset {
+  background: #4b5563; /* gris neutre */
+  color: #e5e7eb;
+}
+
+.btn-reset:hover {
+  opacity: 0.95;
+}
+
+.btn-reset:active {
+  opacity: 0.9;
+}
+
