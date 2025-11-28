@@ -15,17 +15,17 @@ const categories = [
   "Autres",
 ];
 
-// Chaque catégorie a un total sorties et entrées
+// Chaque catégorie garde ses totaux en mémoire (dans le JS)
 const state = categories.map(cat => ({
   categorie: cat,
   sorties: 0,
   entrees: 0,
 }));
 
-const tbody = document.getElementById("categories-body");
-const totalSortiesEl = document.getElementById("total-sorties");
-const totalEntreesEl = document.getElementById("total-entrees");
-const totalFinalEl = document.getElementById("total-final");
+let tbody;
+let totalSortiesEl;
+let totalEntreesEl;
+let totalFinalEl;
 
 function formatEuros(value) {
   return value.toFixed(2).replace(".", ",") + " €";
@@ -44,26 +44,56 @@ function renderTotals() {
   totalFinalEl.classList.toggle("negatif", solde < 0);
 }
 
+function applyAmount(index, type) {
+  const input = document.getElementById(`input-${index}`);
+  if (!input) return;
+
+  const raw = input.value.replace(",", ".");
+  const amount = parseFloat(raw);
+
+  if (isNaN(amount) || amount <= 0) {
+    alert("Entre un montant strictement positif.");
+    return;
+  }
+
+  if (type === "sortie") {
+    state[index].sorties += amount;
+    const sortieCell = document.getElementById(`sorties-${index}`);
+    sortieCell.textContent = formatEuros(state[index].sorties);
+  } else if (type === "entree") {
+    state[index].entrees += amount;
+    const entreeCell = document.getElementById(`entrees-${index}`);
+    entreeCell.textContent = formatEuros(state[index].entrees);
+  }
+
+  input.value = "";
+  renderTotals();
+}
+
 function renderTable() {
   tbody.innerHTML = "";
 
   state.forEach((row, index) => {
     const tr = document.createElement("tr");
 
+    // Catégorie
     const tdCat = document.createElement("td");
     tdCat.textContent = row.categorie;
     tdCat.className = "category";
 
+    // Sorties
     const tdSorties = document.createElement("td");
     tdSorties.className = "amount-cell";
     tdSorties.id = `sorties-${index}`;
     tdSorties.textContent = formatEuros(row.sorties);
 
+    // Entrées
     const tdEntrees = document.createElement("td");
     tdEntrees.className = "amount-cell";
     tdEntrees.id = `entrees-${index}`;
     tdEntrees.textContent = formatEuros(row.entrees);
 
+    // Input montant
     const tdInput = document.createElement("td");
     const input = document.createElement("input");
     input.type = "number";
@@ -73,11 +103,13 @@ function renderTable() {
     input.id = `input-${index}`;
     tdInput.appendChild(input);
 
+    // Actions
     const tdActions = document.createElement("td");
+
     const btnSortie = document.createElement("button");
     btnSortie.textContent = "+ Sortie";
     btnSortie.className = "btn btn-sortie";
-    btnSortie.add.addEventListener("click", () => applyAmount(index, "sortie"));
+    btnSortie.addEventListener("click", () => applyAmount(index, "sortie"));
 
     const btnEntree = document.createElement("button");
     btnEntree.textContent = "+ Entrée";
@@ -99,28 +131,12 @@ function renderTable() {
   renderTotals();
 }
 
-function applyAmount(index, type) {
-  const input = document.getElementById(`input-${index}`);
-  if (!input) return;
+// On attend que le DOM soit prêt
+document.addEventListener("DOMContentLoaded", () => {
+  tbody = document.getElementById("categories-body");
+  totalSortiesEl = document.getElementById("total-sorties");
+  totalEntreesEl = document.getElementById("total-entrees");
+  totalFinalEl = document.getElementById("total-final");
 
-  const raw = input.value.replace(",", ".");
-  const amount = parseFloat(raw);
-
-  if (isNaN(amount) || amount <= 0) {
-    alert("Entre un montant strictement positif.");
-    return;
-  }
-
-  if (type === "sortie") {
-    state[index].sorties += amount;
-    document.getElementById(`sorties-${index}`).textContent = formatEuros(state[index].sorties);
-  } else if (type === "entree") {
-    state[index].entrees += amount;
-    document.getElementById(`entrees-${index}`).textContent = formatEuros(state[index].entrees);
-  }
-
-  input.value = "";
-  renderTotals();
-}
-
-renderTable();
+  renderTable();
+});
