@@ -178,3 +178,15 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+input[type="number"] {
+  width: 80px;
+  padding: 0.15rem 0.35rem;
+  border-radius: 8px;
+  border: 1px solid #1f2937;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 0.85rem;
+  text-align: right;
+  outline: none;
+}
+
